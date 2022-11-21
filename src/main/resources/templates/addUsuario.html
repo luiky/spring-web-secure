@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>    
+    <title>Aniadir Usuario</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css">
+	<script src="https://kit.fontawesome.com/3f9019a054.js" crossorigin="anonymous"></script>
+
+</head>
+<body>
+<div class="container my-5">
+    <div class="row">
+        <div class="col-md-3"></div>
+        <div class="col-md-6">
+            <h2 class="mb-5">Aniadir Usuario</h2>
+        </div>
+        <div class="col-md-3"></div>
+    </div>
+    <div class="row">
+        <div class="col-md-3"></div>
+        <div class="col-md-9">
+<!--         th:action especifica la url a la que serán enviados los datos del formulario. 
+				Seran recibidos por la peticion postMapping en el controlador -->
+<!--         th:object especifica el objeto donde se vincularan los datos del formulario (usuario) -->
+<!--         th:field mapea los campos individuales del formulario con las propiedades correspondientes del Objeto Java, usuario en este caso, a traves de sus setters
+			 Accedemos a la propiedad del objeto seleccionado con th:object con *{nombre propiedad} (*{..} Selection expressions) 
+			 https://www.thymeleaf.org/doc/articles/standarddialect5minutes.html 
+				 -->				
+<!-- 		 Acerca del formulario. more info: https://www.thymeleaf.org/doc/tutorials/3.0/thymeleafspring.html#creating-a-form -->
+            <form action="#" th:action="@{/addUsuario}" th:object="${usuario}" method="post">                      
+                <div class="form-row">
+                    <div class="form-group col-md-9">
+<!--                    Esta <label> esta asociada con el <input> mediante el for="name" y el id="name" -->
+                        <label for="name" class="col-form-label">Nombre</label>
+                        <input type="text" th:field="*{name}" class="form-control" id="name" placeholder="Nombre del Usuario">
+                    </div>
+                    <div class="form-group col-md-9">
+                        <label for="email" class="col-form-label">Email</label>
+                        <input th:field="*{email}" class="form-control" id="email" placeholder="Email del Usuario"></input>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6 mt-5">
+<!--                     Enviamos el formulario con el boton típico. more info: https://getbootstrap.com/docs/5.2/components/buttons/ -->
+                        <input type="submit" class="btn btn-primary center" value="Añadir Usuario">
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="col-md-3"></div>
+    </div>
+</div>
+</body>
+</html>

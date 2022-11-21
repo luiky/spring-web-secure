@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <title>Listar Usuarios</title>
+<!-- Para tratar de adaptar el contenido a la pantalla. 
+	Mas info:	https://www.w3schools.com/css/css_rwd_viewport.asp
+				https://developer.mozilla.org/en-US/docs/Web/HTML/Viewport_meta_tag	-->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+<!--     Incluimos bootstrap. Mas info: https://getbootstrap.com/ -->
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css">
+<!-- 	Incluimos fontawesome para los iconos con un kit. Recomendado de esta forma en https://fontawesome.com/ Crearos el el vuestro-->
+	<script src="https://kit.fontawesome.com/3f9019a054.js" crossorigin="anonymous"></script>
+
+
+</head>
+<body>
+<!-- Estructura switch de thymeleaf.  Preguntamos por el tamanio. 
+Si es 0 vamos a mostrar un mensaje, para el resto de casos mostramos los usuarios
+#lists es un utility object de Thymeleaf que te permite realizar operaciones útiles sobre objetos
+n este caso preguntar por el tamanio de una lista:
+more info: https://www.thymeleaf.org/doc/tutorials/3.0/usingthymeleaf.html#appendix-a-expression-basic-objects
+-->
+<div th:switch="${#lists.size(usuarios)}" class="container my-5">
+<!-- 	Estamos usando BootStrap para crear la tabla. Es un ejemplo copiao de algún lao, no lo recuerdo :(, y adaptado. 
+		More info: https://www.w3schools.com/bootstrap5/bootstrap_grid_basic.php -->
+    <div class="row"> 
+        <div class="col-md-2"></div>
+        <div class="col-md-8">
+<!--         Caso 0 del switch. Si no hay usuarios mostramos un mensajito -->
+            <div th:case="'0'">
+                <h2>¡No has añadido ningún usuario!</h2>
+                <p class="text-success">¡Añade un usuario ahora!</p>
+            </div>
+<!--        Caso default del th:switch. * significa para todos los otros casos -->
+            <div th:case="*">
+                <h2 class="my-5">Usuarios</h2>
+                <table class="table table-striped table-responsive-md">
+                    <thead>
+                    <tr>
+                        <th>Nombre</th>
+                        <th>Correo</th>
+                        <th>Direcciones</th>                        
+                        <th>Editar</th>
+                        <th>Borrar</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+<!--                Rellenamos las filas usando un bloque "for" de thymeleaf th:each -->
+<!-- 				th:each ="usuario : ${usuarios}" 
+					${...} para acceder a las variables. 
+					${usuarios} es una variable de la estructura clave-valor model (context variable para thymeleaf). 
+					Viene desde el controlador.	usuarios es la key, y el valor es una "lista" de objetos Usuario.					  
+					Cada objeto usuario se extrae en un objeto local (no forma parte de model) llamado usuario					-->
+                    <tr th:each ="usuario : ${usuarios}">
+<!--                    ${usuario.name}  Accedemos a las propiedades del objeto Usuario, a traves de la variable local usuario 
+						th:text nos convierte a texto/string la propiedad-->
+                        <td th:text="${usuario.name}"></td>
+                        <td th:text="${usuario.email}"></td>
+<!--                     Va a convertir todo el array de direcciones en un string usando el toString() del objeto -->
+                        <td th:text="${usuario.direcciones}"></td>
+                        
+<!--                    Incluimos un boton con su iconito "fas fa-edit" de fontawesome para editar ese usuario.                                              	                         -->
+<!-- 					th:href="@{...}" especifica la direccion de la petición, mapeada en el getmapping del controlador, a la que nos dirigirá el click en el boton
+						Nos envia el id del usuario en la variable id, parametro de entrada del metodo del controlador, que sera tb aniadida a la url con la anotacion @pathvariable del controlador 
+						-->					
+                   		<td><a th:href="@{/updateUsuario/{id}(id=${usuario.id})}" class="btn btn-primary"><span class="fas fa-edit"></span></a></td>
+                        <td>
+<!-- 					Nos permite usar automaticamente metodos ocultos para put y delete. Siempre que la propiedad spring.mvc.hiddenmethod.filter.enabled este a true (ver application.properties) 
+						th:method="delete" y th:method="put" Thymeleaf aniadira automaticamente el hidden <input type="hidden" name="_method" value="DELETE">
+						Envia los datos del formulario a la Url /deleteUsuario/id y son recibidos por el método anotado @DeleteMapping del controlador 						
+						more info: https://stackoverflow.com/questions/34048617/spring-boot-how-to-use-hiddenhttpmethodfilter                        -->
+                            <form action="#" th:action="@{/deleteUsuario/{id}(id=${usuario.id})}" th:method="delete">
+<!--                            Incluimos un boton y su icono fas fa-trash para borrar este usuario en estilo de color rojo(danger).    -->
+<!-- 							more info: https://getbootstrap.com/docs/5.2/components/buttons/#button-tags -->
+                                <button type="submit" class="btn btn-danger">
+                                    <span class="fas fa-trash"></span>
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+<!--             Icono con el tipico + para añadir usuario -->
+			<p class="my-5"><a th:href=@{/addUsuario} class="btn btn-primary"><span class="fas fa-plus-square"></span></a></p> 
+        </div>
+        <div class="col-md-2"></div>
+    </div>
+</div>
+</body>
+</html>

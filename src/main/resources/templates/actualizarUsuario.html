@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <title>Actualizar Usuario</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css">
+	<script src="https://kit.fontawesome.com/3f9019a054.js" crossorigin="anonymous"></script>
+</head>
+<body>
+<div class="container my-5">
+    <div class="row">
+        <div class="col-md-3"></div>
+        <div class="col-md-6">
+            <h2 class="mb-5">Actualizar Usuario</h2>
+        </div>
+    </div>
+    <h2 class="mb-5"></h2>
+    <div class="row">
+        <div class="col-md-3"></div>
+        <div class="col-md-6">
+        <!-- 			#Nos permite usar automaticamente metodos ocultos para put y delete. Ver listarUsaurios (delete) y addUsuario.html
+        				Envia los datos del formulario a la Url /updateUsuario/id y son recibidos por el método anotado @PutMapping del controlador
+		<!--			action="#" se envia a la misma url dnd está y method=post de html. No son realmente necesarios útiles para maquetacion -->
+       		<form action="#" th:action="@{/updateUsuario/{id}(id=${usuarioUpdate.id})}" th:object="${usuarioUpdate}" method="post" th:method="put">                          		
+                <div class="form-row">                	
+                    <div class="form-group col-md-9">
+                        <label for="name" class="col-form-label">Nombre</label>
+                        <input type="text" th:field="*{name}" class="form-control" id="name" placeholder="Nombre del Usuario">
+                    </div>
+                    <div class="form-group col-md-9">
+                        <label for="email" class="col-form-label">Email</label>
+                        <input th:field="*{email}" class="form-control" id="email" placeholder="Email del Usuario"></input>
+                    </div>
+<!--                     Opcional: copiamos el campo direcciones para devolver el objeto actualizado. Se lo ocultamos al usuario en la vista -->
+                    <div class="form-group col-md-9">
+                    	<input type="hidden" th:field="*{direcciones}" />
+                    </div>                                     
+
+                </div>
+                <div class="row">
+                    <div class="col-md-6 mt-5">
+                        <input type="submit" class="btn btn-primary" value="Actualizar Usuario">
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="col-md-3"></div>
+    </div>
+</div>
+
+</body>
+</html>
