@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <title>Accesso Denegado </title>
+<!-- Para tratar de adaptar el contenido a la pantalla. 
+	Mas info:	https://www.w3schools.com/css/css_rwd_viewport.asp
+				https://developer.mozilla.org/en-US/docs/Web/HTML/Viewport_meta_tag	-->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+<!--     Incluimos bootstrap. Mas info: https://getbootstrap.com/ -->
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css">
+<!-- 	Incluimos fontawesome para los iconos con un kit. Recomendado de esta forma en https://fontawesome.com/ Crearos el el vuestro-->
+	<script src="https://kit.fontawesome.com/3f9019a054.js" crossorigin="anonymous"></script>
+</head>
+<body>
+
+	<div class="container my-5">
+		<div class="row">
+			<div class="col-md-1"></div>
+			<div class="col-md-10">
+				<h4 class="mb-1 text-center text-danger">No puedes realizar esta acción</h4>
+			</div>
+			<div class="col-md-1"></div>
+		</div>
+		<div class="row pt-3">
+			<div class="col-md-5"></div>
+			<div class="col-md-2">
+				<a class="btn btn-dark" href="#" th:href="@{/user/listarUsuarios}">Volver</a>
+			</div>
+			<div class="col-md-5"></div>
+		</div>
+	</div>
+
+</body>
+</html>

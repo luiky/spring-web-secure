@@ -1,13 +1,14 @@
 <!DOCTYPE HTML>
 <html>
 <head> 
-    <title>Pagina de Bienvenida</title> 
+    <title>Pagina de Bienvenida en HTML convencional</title> 
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 </head>
 <body>
 	<p>Index.html como Welcome PAGE </p>
-	<p>Hola Mundo con Spring y Thymeleaf  <a href="/hola">hola</a></p>
-    <p>Ejemplo CRUD con Spring y Thymeleaf  <a href="/listarUsuarios">listarUsuarios</a></p>    
+	<p>Hola Mundo con Spring y Thymeleaf (No necesita loguearse para acceder)  <a href="/hola">hola</a></p>
+    <p>Ejemplo CRUD con Spring y Thymeleaf (Necesita loguearse para acceder): 
+    <br><b> Usuarios y passwords en SecurityConfigurationNew::userDetailsService() </b><a href="/user/listarUsuarios">listarUsuarios</a></p>    
 	<p>Logout incluido por defecto al incluir Spring Secure en el POM <a href="/logout">  logout</a></p>
         
 </body>

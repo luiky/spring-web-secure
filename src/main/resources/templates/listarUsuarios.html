@@ -64,13 +64,13 @@ more info: https://www.thymeleaf.org/doc/tutorials/3.0/usingthymeleaf.html#appen
 <!-- 					th:href="@{...}" especifica la direccion de la petición, mapeada en el getmapping del controlador, a la que nos dirigirá el click en el boton
 						Nos envia el id del usuario en la variable id, parametro de entrada del metodo del controlador, que sera tb aniadida a la url con la anotacion @pathvariable del controlador 
 						-->					
-                   		<td><a th:href="@{/updateUsuario/{id}(id=${usuario.id})}" class="btn btn-primary"><span class="fas fa-edit"></span></a></td>
+                   		<td><a th:href="@{/user/updateUsuario/{id}(id=${usuario.id})}" class="btn btn-primary"><span class="fas fa-edit"></span></a></td>
                         <td>
 <!-- 					Nos permite usar automaticamente metodos ocultos para put y delete. Siempre que la propiedad spring.mvc.hiddenmethod.filter.enabled este a true (ver application.properties) 
 						th:method="delete" y th:method="put" Thymeleaf aniadira automaticamente el hidden <input type="hidden" name="_method" value="DELETE">
 						Envia los datos del formulario a la Url /deleteUsuario/id y son recibidos por el método anotado @DeleteMapping del controlador 						
 						more info: https://stackoverflow.com/questions/34048617/spring-boot-how-to-use-hiddenhttpmethodfilter                        -->
-                            <form action="#" th:action="@{/deleteUsuario/{id}(id=${usuario.id})}" th:method="delete">
+                            <form action="#" th:action="@{/admin/deleteUsuario/{id}(id=${usuario.id})}" th:method="delete">
 <!--                            Incluimos un boton y su icono fas fa-trash para borrar este usuario en estilo de color rojo(danger).    -->
 <!-- 							more info: https://getbootstrap.com/docs/5.2/components/buttons/#button-tags -->
                                 <button type="submit" class="btn btn-danger">
@@ -83,9 +83,11 @@ more info: https://www.thymeleaf.org/doc/tutorials/3.0/usingthymeleaf.html#appen
                 </table>
             </div>
 <!--             Icono con el tipico + para añadir usuario -->
-			<p class="my-5"><a th:href=@{/addUsuario} class="btn btn-primary"><span class="fas fa-plus-square"></span></a></p>
+			<p class="my-5"><a th:href=@{/admin/addUsuario} class="btn btn-primary"><span class="fas fa-plus-square"></span></a></p>
+		
         </div>
-        <div class="col-md-2"></div>
+ <!--             Icono con el tipico logouut  -->
+        <div class="col-md-2"> <a th:href=@{/logout} class="btn btn-secondary"><span class="fas fa-sign-out "></span></a> </div>
     </div>
 </div>
 </body>

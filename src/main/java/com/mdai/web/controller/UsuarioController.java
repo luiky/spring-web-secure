@@ -50,8 +50,8 @@ public class UsuarioController {
 	/**
     LISTAR USUARIOS     
    */
-	//Procesa la peticion GET a http://localhost:8080/listarUsuarios
-    @GetMapping("/listarUsuarios")
+	//Procesa la peticion GET a http://localhost:8080/user/listarUsuarios
+    @GetMapping("/user/listarUsuarios")
     //muestra una tabla con los usuarios del sistema
     public String showUsersTable(Model model) {
     	System.out.println("\t UsuarioController::showUsersTable");    	    	    	
@@ -61,7 +61,7 @@ public class UsuarioController {
     }
     
     /**
-     ADD USUARIO     
+     ADD USUARIO, solo ADMIN     
     */
     //Invocado desde el boton + de listarUsuarios.html 
     //muestra el formulario para añadir un usuario
@@ -75,7 +75,7 @@ public class UsuarioController {
     //model.addAttribute("usuarioAdd", new Usuario(null, null)); y usarlo en el th:object={usuarioAdd} del html
     //Comprobacion:
     //Podemos pasar el model como param de entrada y el usuario y comprobar que de verdad esta en el modelo...
-    @GetMapping("/addUsuario")
+    @GetMapping("/admin/addUsuario")
     public String showAddUsuarioForm(Usuario usuario) {    	
     	System.out.println("\t UsuarioController::showAddUsuarioForm");    	
         return "addUsuario";
@@ -84,7 +84,7 @@ public class UsuarioController {
     //Invocado desde el boton del formulario añadir usuario de addUsuario.html
     //La vinculacion entre el formulario y el metodo nos proporciona en usuario los datos introducidos.
     //No añadimos direcciones pq es una vista "admin" y porque es un ejemplo simple...
-    @PostMapping("/addUsuario")    
+    @PostMapping("/admin/addUsuario")    
     public String addUsuario(Usuario usuario, Model model){
     	System.out.println("\t UsuarioController::addUsuario");    	    	
     	///logica de validacion de usuarios, email correcto, repetido o no?, nombre usuario repetido, formato....
@@ -98,16 +98,16 @@ public class UsuarioController {
     	//le pedimos al servicio que nos cree un usuario    	
         model.addAttribute("usuarios", usuarioService.crearUsuario(usuario)); //no es estrictamente necesario añadir el atributo al model aquí.  	
 
-        return "redirect:/listarUsuarios"; //redirigimos la URL a la vista listarUsuarios
+        return "redirect:/user/listarUsuarios"; //redirigimos la URL a  /user/listarUsuarios
     }
    
     /**
-     Update USUARIO
+     Update USUARIO, user y admin
     */
     
     //Invocado desde el boton editar de listarUsuarios.html 
     //nombre mapeado para spring será: /updateUsuario/id, donde id es el Long del id del usuario
-    @GetMapping("/updateUsuario/{id}")
+    @GetMapping("/user/updateUsuario/{id}")
     								  //@PathVariable: El parámetro forma parte de la URL 
     public String showUpdateUsuarioForm(@PathVariable("id") Long usuarioId, Model model) {
     	System.out.println("\t UsuarioController::showUpdateUsuarioForm");    	
@@ -116,12 +116,12 @@ public class UsuarioController {
     	//el .get final es por el Optional devuelto.
         model.addAttribute("usuarioUpdate",usuarioService.findUsuarioById(usuarioId).get() );
         //nombre de la vista html, diferente escrito en castellano a idea, para que veais que es posible.
-        //devolvera el nombre del .html (actualizarUsuario.html), lo mostrará, pero la url en la barra direcciones sera /updateUsuario/id
+        //devolvera el nombre del .html (actualizarUsuario.html), lo mostrará, pero la url en la barra direcciones sera /user/updateUsuario/id
         return "actualizarUsuario";
     }
 
     //Invocado desde el boton de actualizarUsuario.html
-    @PutMapping("/updateUsuario/{id}")
+    @PutMapping("/user/updateUsuario/{id}")
     public String updateUsuario(@PathVariable("id") Long id, Usuario usuario, Model model) {   	
     	System.out.println("\n\t UsuarioController::updateUsuario");
  		 	
@@ -143,22 +143,30 @@ public class UsuarioController {
     	//usuarioService.updateNameAndEmailUsuario(id, usuario.getName(), usuario.getEmail());
     	model.addAttribute("usuarios", usuarioService.updateNameAndEmailUsuario(id, usuario.getName(), usuario.getEmail()) );
     	    	 
-    	//OJO: observar, aunque no necesaria aquí, la copia de direcciones sobre el usuario en el input oculto del html (actualizarUsuario.html)    	
-        return "redirect:/listarUsuarios";    	
+    	//OJO: observar, aunque no necesaria aquí, la copia de direcciones sobre el usuario en el input oculto del html (actualizarUsuario.html)
+    	
+        return "redirect:/user/listarUsuarios";    	
     }
 	
     /**
-     * DELETE USUARIO
+     * DELETE USUARIO solo admin
      */
     //Es invocado desde el boton típico de la papelera en listarUsuarios.html
     //se le envía el id del usuario y este se añade url con @PathVariable, aunque no llega a mostrarse la URL por la redireccion
-    @DeleteMapping("/deleteUsuario/{id}")
+    @DeleteMapping("/admin/deleteUsuario/{id}")
     public String deleteUsuario(@PathVariable("id") Long id, Model model) {
     	System.out.println("\t usuarioController::deleteUsuario");
     	//no es estrictamente necesario añadir los usuarios al modelo en este caso
         model.addAttribute("usuarios", usuarioService.deleteUsuarioById(id));        
-        return "redirect:/listarUsuarios";
+        return "redirect:/user/listarUsuarios";
     }
+    
+    //para manejar la peticion de acceso denegado y devolverla a la vista adecuada. Lo suyo es en  un controlador indepeendiente. Por ejemplo, ErrorController
+    @GetMapping("/accessDenied")
+    public String accessDenied() {
+        return "accessDenied";
+    }
+    
 	
 
 }

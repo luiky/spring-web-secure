@@ -22,7 +22,7 @@
         <!-- 			#Nos permite usar automaticamente metodos ocultos para put y delete. Ver listarUsaurios (delete) y addUsuario.html
         				Envia los datos del formulario a la Url /updateUsuario/id y son recibidos por el método anotado @PutMapping del controlador
 		<!--			action="#" se envia a la misma url dnd está y method=post de html. No son realmente necesarios útiles para maquetacion -->
-       		<form action="#" th:action="@{/updateUsuario/{id}(id=${usuarioUpdate.id})}" th:object="${usuarioUpdate}" method="post" th:method="put">                          		
+       		<form action="#" th:action="@{/user/updateUsuario/{id}(id=${usuarioUpdate.id})}" th:object="${usuarioUpdate}" method="post" th:method="put">                          		
                 <div class="form-row">                	
                     <div class="form-group col-md-9">
                         <label for="name" class="col-form-label">Nombre</label>
