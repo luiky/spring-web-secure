@@ -28,7 +28,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 @Configuration 
 @EnableWebSecurity 
 //@Configuration Indicates that a class declares one or more @Bean methods and may be processed by the Spring container to generate bean definitions and service requests for those beans at runtime
-public class SecurityConfigurationNew {// extends WebSecurityConfigurerAdapter {
+public class SecurityConfigurationNew {// extends WebSecurityConfigurerAdapter (clase deprecated) https://spring.io/blog/2022/02/21/spring-security-without-the-websecurityconfigureradapter{
 
 	@Autowired
 	private AccessDeniedHandler customAccessDeniedHandler;	
@@ -36,7 +36,7 @@ public class SecurityConfigurationNew {// extends WebSecurityConfigurerAdapter {
 	@Bean
 	public SecurityFilterChain filterChain (HttpSecurity http) throws Exception {
     	
-    	System.out.println("\tSecurityConfigurationNew::configure(HttpSecurity http) ");
+    	System.out.println("\tSecurityConfigurationNew::filterChain(HttpSecurity http) ");
         http.authorizeRequests()
 //              .antMatchers("/index.html").permitAll() //solo necesario en este caso si usarmos el anyRequest().authenthicated()
 //              .antMatchers("/h2-console/**").permitAll() //solo necesario en este caso si usarmos el anyRequest().authenthicated()
@@ -56,12 +56,16 @@ public class SecurityConfigurationNew {// extends WebSecurityConfigurerAdapter {
 	//Will not secure Ant [pattern='/static/**']
 	@Bean
 	public WebSecurityCustomizer webSecurityCustomizer() {
-    	System.out.println("\tSecurityConfigurationNew::configure(WebSecurity web) ");
+    	System.out.println("\tSecurityConfigurationNew::webSecurityCustomizer() ");
     	return (web)->web
               .ignoring()
               .antMatchers( "/static/**"); //antMatchers("/images/**", "/css/**")
     }
 
+	//Creamos usuarios en memoria al arrancar la app-web y no necesitamos nada más
+	//Creamos dos usuarios user y admin, con los roles USER y ADMIN respectivamente
+	//El usuario admin, tiene ambos roles
+	//Encriptamos sus passwords llamando al @Bean del final
 	@Bean
 	public InMemoryUserDetailsManager userDetailsService() {
     	System.out.println("\t SecurityConfigurationNew::userDetailsService() ");
@@ -83,6 +87,7 @@ public class SecurityConfigurationNew {// extends WebSecurityConfigurerAdapter {
 
     }
 
+	//Encriptamos sus passwords usando BCryptPasswordEncoder
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
