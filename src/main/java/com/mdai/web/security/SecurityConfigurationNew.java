@@ -62,8 +62,6 @@ public class SecurityConfigurationNew {// extends WebSecurityConfigurerAdapter {
               .antMatchers( "/static/**"); //antMatchers("/images/**", "/css/**")
     }
 
-    //@Override
-    //protected void configure(AuthenticationManagerBuilder auth) throws Exception {
 	@Bean
 	public InMemoryUserDetailsManager userDetailsService() {
     	System.out.println("\t SecurityConfigurationNew::userDetailsService() ");
