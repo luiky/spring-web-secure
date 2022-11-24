@@ -23,7 +23,7 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.web.bind.annotation.PostMapping;
-
+//hola
 //usando spring-boot con cualquiera de las dos anotaciones o las dos es suficiente. Dejo las dos por tradición 
 @Configuration 
 @EnableWebSecurity 
