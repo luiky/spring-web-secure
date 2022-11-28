@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <title>Listar Usuarios</title>
+<!-- Para tratar de adaptar el contenido a la pantalla. 
+	Mas info:	https://www.w3schools.com/css/css_rwd_viewport.asp
+				https://developer.mozilla.org/en-US/docs/Web/HTML/Viewport_meta_tag	-->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+<!--     Incluimos bootstrap. Mas info: https://getbootstrap.com/ -->
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css">
+<!-- 	Incluimos fontawesome para los iconos con un kit. Recomendado de esta forma en https://fontawesome.com/ Crearos el el vuestro-->
+	<script src="https://kit.fontawesome.com/3f9019a054.js" crossorigin="anonymous"></script>
+
+
+</head>
+<body>
+<div class="container my-5">
+		<div class="row">
+			<div class="col-md-3"></div>
+			<div class="col-md-6">
+				<h2 class="mb-1 text-center">MY LOGIN</h2>
+			</div>
+			<div class="col-md-3"></div>
+		</div>
+		<div class="row">
+			<div class="col-md-3"></div>
+			<div class="col-md-6">
+				<form th:action="@{/login}" method="post">
+<!-- 				El atributo "name" del input debe ser username y "password"a que asi lo espera por defecto.  -->
+<!-- 				Más info javadoc:https://docs.spring.io/spring-security/site/docs/current/api/org/springframework/security/config/annotation/web/configurers/FormLoginConfigurer.html#usernameParameter(java.lang.String) -->
+					<div class="form-group">
+						<label for="username">Nombre de Usuario</label>
+						<input type="text" class="form-control" name="username" placeholder="Introduce nombre de usuario" required autofocus>
+					</div>
+					<div class="form-group">
+						<label for="password">Password</label>
+						<input type="password" class="form-control" name="password" placeholder="Introduce Password" required autofocus>
+					</div>
+					<button type="submit" class="btn btn-dark">Submit</button>
+				</form>
+			</div>
+			<div class="col-md-3"></div>
+		</div>
+	</div>
+</body>
+</html>

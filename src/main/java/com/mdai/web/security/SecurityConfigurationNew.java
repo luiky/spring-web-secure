@@ -44,7 +44,7 @@ public class SecurityConfigurationNew {// extends WebSecurityConfigurerAdapter (
                 .antMatchers("/user/**").hasRole("USER")                                
 //              .anyRequest().authenticated() //cualquier peticion debe ser autenticada. Por tanto, siempre debemos loguearnos. 
                 .and()
-                .formLogin()//loginPage por defecto proporcionada por Spring. Acceso mediante form: /login y /logout respectivamente. Personalización con loginPage("/login"), get mapping para respuesta login y postmapping para el logout (ver final de este fichero)
+                .formLogin().loginPage("/login")//loginPage por defecto proporcionada por Spring. Acceso mediante form: /login y /logout respectivamente. Personalización con loginPage("/login"), get mapping para respuesta login y postmapping para el logout. O getmapping a logout
               	.and()
                 .exceptionHandling().accessDeniedHandler(customAccessDeniedHandler); //una vez logueado, si no es nuestro rol se lanzará la excepcion y mostraremos nuestra pag
 //              .exceptionHandling().accessDeniedPage("/accessDenied"); //no funciona para los metodos DELETE: Resolved [org.springframework.web.HttpRequestMethodNotSupportedException: Request method 'DELETE' not supported]
