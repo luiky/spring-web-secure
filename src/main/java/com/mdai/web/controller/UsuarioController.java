@@ -1,5 +1,6 @@
 package com.mdai.web.controller;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 
+import com.mdai.web.model.Direccion;
 import com.mdai.web.model.Usuario;
 import com.mdai.web.service.UsuarioService;
 
@@ -115,6 +117,11 @@ public class UsuarioController {
     	//lo añadimos a model, su clave será "usuarioUpdate". Podremos acceder a él desde la vista actualizarUsuario
     	//el .get final es por el Optional devuelto.
         model.addAttribute("usuarioUpdate",usuarioService.findUsuarioById(usuarioId).get() );
+        
+        List<Direccion> listaParaIgualTipo = new ArrayList<>();
+        listaParaIgualTipo.add(new Direccion("como si fuera", "un objeto artista"));        
+        model.addAttribute("DireccionArtista",listaParaIgualTipo);
+        System.out.println("\t model: "+ model.asMap().toString());
         //nombre de la vista html, diferente escrito en castellano a idea, para que veais que es posible.
         //devolvera el nombre del .html (actualizarUsuario.html), lo mostrará, pero la url en la barra direcciones sera /user/updateUsuario/id
         return "actualizarUsuario";
@@ -124,6 +131,7 @@ public class UsuarioController {
     @PutMapping("/user/updateUsuario/{id}")
     public String updateUsuario(@PathVariable("id") Long id, Usuario usuario, Model model) {   	
     	System.out.println("\n\t UsuarioController::updateUsuario");
+    	System.out.println("\t model: "+ model.asMap().toString());
  		 	
     	//opcion 1 "logica" en controller y muestra de datos para entender la vinculacion con el formulario
 //    	    	
