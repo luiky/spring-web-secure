@@ -49,7 +49,7 @@ public class SecurityConfigurationNew {// extends WebSecurityConfigurerAdapter (
     	System.out.println("\tSecurityConfigurationNew::webSecurityCustomizer() ");
     	return (web)->web
               .ignoring()
-              .antMatchers( "/static/**"); //antMatchers("/images/**", "/css/**")
+              .antMatchers( "/static/**", "/h2-console/**"); //antMatchers("/images/**", "/css/**")
     }
 
 	//Creamos usuarios en memoria al arrancar la app-web y no necesitamos nada más
