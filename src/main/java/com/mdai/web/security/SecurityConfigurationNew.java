@@ -14,7 +14,7 @@ import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.access.AccessDeniedHandler;
 //hola
-//usando spring-boot con cualquiera de las dos anotaciones o las dos es suficiente. Dejo las dos por tradición 
+//usando spring-boot con cualquiera de las dos anotaciones o las dos es suficiente. Dejo las dos por tradicion 
 @Configuration 
 @EnableWebSecurity 
 //@Configuration Indicates that a class declares one or more @Bean methods and may be processed by the Spring container to generate bean definitions and service requests for those beans at runtime
@@ -27,7 +27,7 @@ public class SecurityConfigurationNew {// extends WebSecurityConfigurerAdapter (
 	public SecurityFilterChain filterChain (HttpSecurity http) throws Exception {
     	
     	System.out.println("\tSecurityConfigurationNew::filterChain(HttpSecurity http) ");
-        http.authorizeRequests()
+        http.authorizeHttpRequests()
 //              .antMatchers("/index.html").permitAll() //solo necesario en este caso si usarmos el anyRequest().authenthicated()
 //              .antMatchers("/h2-console/**").permitAll() //solo necesario en este caso si usarmos el anyRequest().authenthicated()
                 .antMatchers("/admin/**").hasRole("ADMIN")
@@ -61,11 +61,11 @@ public class SecurityConfigurationNew {// extends WebSecurityConfigurerAdapter (
     	System.out.println("\t SecurityConfigurationNew::userDetailsService() ");
     	
 		UserDetails user = User.withUsername("user")
-				.passwordEncoder(passwordEncoder()::encode).password("p@ssw0rd")
+				.passwordEncoder(passwordEncoder()::encode).password("password")
 				.roles("USER").build();
 
 		UserDetails admin = User.withUsername("admin")
-				.passwordEncoder(passwordEncoder()::encode).password("pa$$w0rd")
+				.passwordEncoder(passwordEncoder()::encode).password("password")
 				.roles("ADMIN","USER").build();
 
 		InMemoryUserDetailsManager userDetailsManager = new InMemoryUserDetailsManager();
@@ -83,14 +83,5 @@ public class SecurityConfigurationNew {// extends WebSecurityConfigurerAdapter (
         return new BCryptPasswordEncoder();
     }
     
-
-// Adaptalo a tu controller...  (no prometo nada).Este jaleo es por evitar el ataque csrf (o algo así) en el login por defecto y logout ya lo implementan los de spring    
-//	@PostMapping("/doLogout")
-//	public String logout(HttpServletRequest request, HttpServletResponse response) {
-//		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-//		if(authentication != null) {
-//			new SecurityContextLogoutHandler().logout(request, response, authentication);
-//		}
-//		return "redirect:/login";
 }
 

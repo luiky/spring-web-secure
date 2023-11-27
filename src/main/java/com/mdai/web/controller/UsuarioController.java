@@ -20,7 +20,7 @@ public class UsuarioController {
 	
 	private final UsuarioService usuarioService;
 	
-	//Le pido a Spring (IoC container) que me injecte la dependencia mediante el constructor parametrizado.
+	//Le pido a Spring (IoC container) que me inyecte la dependencia mediante el constructor parametrizado.
 	@Autowired
 	public UsuarioController(UsuarioService usuarioService) {
 		super();
@@ -28,13 +28,6 @@ public class UsuarioController {
 		System.out.println("\t Constructor UsuarioController ");
 	}
 
-//	AVISO: Este método no se usa
-//	No es necesario si tenemos un index.html en la carpeta resources/static
-	//WelcomePageHandlerMapping nos asocia automaticamente el index.html como pag de bienvenida	
-//	@GetMapping("/")
-    public String index() {		
-        return "redirect:/index";
-    }
 
 	//
 	//La url comienza http:localhost:8080. hola.html está en resources/templates
@@ -81,9 +74,9 @@ public class UsuarioController {
         return "addUsuario";
     }
 
-    //Invocado desde el boton del formulario añadir usuario de addUsuario.html
+    //Invocado desde el boton del formulario aniadir usuario de addUsuario.html
     //La vinculacion entre el formulario y el metodo nos proporciona en usuario los datos introducidos.
-    //No añadimos direcciones pq es una vista "admin" y porque es un ejemplo simple...
+    //No aniadimos direcciones pq es una vista "admin" y porque es un ejemplo simple...
     @PostMapping("/admin/addUsuario")    
     public String addUsuario(Usuario usuario, Model model){
     	System.out.println("\t UsuarioController::addUsuario");    	    	
@@ -116,7 +109,7 @@ public class UsuarioController {
     	//el .get final es por el Optional devuelto.
         model.addAttribute("usuarioUpdate",usuarioService.findUsuarioById(usuarioId).get() );
         //nombre de la vista html, diferente escrito en castellano a idea, para que veais que es posible.
-        //devolvera el nombre del .html (actualizarUsuario.html), lo mostrará, pero la url en la barra direcciones sera /user/updateUsuario/id
+        //devolvera el nombre del .html (actualizarUsuario.html), lo mostrara, pero la url en la barra direcciones sera /user/updateUsuario/id
         return "actualizarUsuario";
     }
 
