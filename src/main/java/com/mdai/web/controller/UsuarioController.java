@@ -21,7 +21,7 @@ public class UsuarioController {
 	private final UsuarioService usuarioService;
 	
 	//Le pido a Spring (IoC container) que me inyecte la dependencia mediante el constructor parametrizado.
-	@Autowired
+	@Autowired //@Autowired no es necesario aqui pq solo hay un constructor (pero para que se recuerde la inyeccion de dependencias)
 	public UsuarioController(UsuarioService usuarioService) {
 		super();
 		this.usuarioService = usuarioService;
@@ -30,7 +30,7 @@ public class UsuarioController {
 
 
 	//
-	//La url comienza http:localhost:8080. hola.html está en resources/templates
+	//La url comienza http:localhost:8080. hola.html esta en resources/templates
 	//Procesa la peticion a http://localhost:8080/hola
 	@GetMapping("/hola")
 	public String holaUsuarioControllerThymeleaf(Model model) {
@@ -41,7 +41,7 @@ public class UsuarioController {
 	}
 	
 	/**
-    LISTAR USUARIOS     
+    LISTAR USUARIOS, USER y ADMIN     
    */
 	//Procesa la peticion GET a http://localhost:8080/user/listarUsuarios
     @GetMapping("/user/listarUsuarios")
@@ -99,7 +99,7 @@ public class UsuarioController {
     */
     
     //Invocado desde el boton editar de listarUsuarios.html 
-    //nombre mapeado para spring será: /updateUsuario/id, donde id es el Long del id del usuario
+    //nombre mapeado para spring sera: /updateUsuario/id, donde id es el Long del id del usuario
     @GetMapping("/user/updateUsuario/{id}")
     								  //@PathVariable: El parámetro forma parte de la URL 
     public String showUpdateUsuarioForm(@PathVariable("id") Long usuarioId, Model model) {
@@ -157,6 +157,7 @@ public class UsuarioController {
     //para manejar la peticion de acceso denegado y devolverla a la vista adecuada. Lo suyo es en  un controlador indepeendiente. Por ejemplo, ErrorController
     @GetMapping("/accessDenied")
     public String accessDenied() {
+    	System.out.println("\t usuarioController::accessDenied ");
         return "accessDenied";
     }
     

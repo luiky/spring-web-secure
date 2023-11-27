@@ -13,43 +13,40 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.access.AccessDeniedHandler;
-//hola
-//usando spring-boot con cualquiera de las dos anotaciones o las dos es suficiente. Dejo las dos por tradicion 
+
+//usando spring-boot con cualquiera de las dos anotaciones, o las dos, es suficiente. Dejo las dos por tradicion 
 @Configuration 
 @EnableWebSecurity 
 //@Configuration Indicates that a class declares one or more @Bean methods and may be processed by the Spring container to generate bean definitions and service requests for those beans at runtime
-public class SecurityConfigurationNew {// extends WebSecurityConfigurerAdapter (clase deprecated) https://spring.io/blog/2022/02/21/spring-security-without-the-websecurityconfigureradapter{
+public class SecurityConfiguration {// extends WebSecurityConfigurerAdapter (clase deprecated) https://spring.io/blog/2022/02/21/spring-security-without-the-websecurityconfigureradapter{
 
 	@Autowired
 	private AccessDeniedHandler customAccessDeniedHandler;	
 	
+	//configuración de Spring Security. Para definir como deben manejarse la autenticación y la autorización en la app-web.
 	@Bean
-	public SecurityFilterChain filterChain (HttpSecurity http) throws Exception {
+	SecurityFilterChain filterChain (HttpSecurity http) throws Exception {
     	
-    	System.out.println("\tSecurityConfigurationNew::filterChain(HttpSecurity http) ");
-        http.authorizeHttpRequests()
-//              .antMatchers("/index.html").permitAll() //solo necesario en este caso si usarmos el anyRequest().authenthicated()
-//              .antMatchers("/h2-console/**").permitAll() //solo necesario en este caso si usarmos el anyRequest().authenthicated()
-                .antMatchers("/admin/**").hasRole("ADMIN")
-                .antMatchers("/user/**").hasRole("USER")                                
-//              .anyRequest().authenticated() //cualquier peticion debe ser autenticada. Por tanto, siempre debemos loguearnos. 
-                .and()
-                .formLogin()//loginPage por defecto proporcionada por Spring. Acceso mediante form: /login y /logout respectivamente. Personalización con loginPage("/login"), get mapping para respuesta login y postmapping para el logout (ver final de este fichero)
+    	System.out.println("\tSecurityConfiguration::filterChain(HttpSecurity http) ");
+    	//Las llamadas a métodos devuelven un objeto HttpSecurity. 
+    	//Se pueden encadenar metodos (and()) para configurar reglas de autorización de manera más concisa.
+    	http.authorizeHttpRequests()
+                .antMatchers("/admin/**").hasRole("ADMIN") //para definir patrones de URL especificos y aplicar reglas de autorizacion a esos patrones.
+                .antMatchers("/user/**").hasRole("USER")                                 
+                .and() //nos permite encadenar configuraciones
+                .formLogin()//loginPage por defecto proporcionada por Spring. Acceso mediante form: /login y /logout respectivamente. 
               	.and()
                 .exceptionHandling().accessDeniedHandler(customAccessDeniedHandler); //una vez logueado, si no es nuestro rol se lanzará la excepcion y mostraremos nuestra pag
-//              .exceptionHandling().accessDeniedPage("/accessDenied"); //no funciona para los metodos DELETE: Resolved [org.springframework.web.HttpRequestMethodNotSupportedException: Request method 'DELETE' not supported]
         return http.build();
 				
     }
-	//No es necesario. Lo dejo por historia y pq veréis muchos ejemplos así. No lo recomiendan actualmente:
-	//You are asking Spring Security to ignore Ant [pattern='/static/**']. This is not recommended -- please use permitAll via HttpSecurity#authorizeHttpRequests instead.
-	//Will not secure Ant [pattern='/static/**']
+	//Ignoro la ruta de H2. No es necesario login. Esto es para poder acceder facilmente a la BD. 
 	@Bean
-	public WebSecurityCustomizer webSecurityCustomizer() {
-    	System.out.println("\tSecurityConfigurationNew::webSecurityCustomizer() ");
+	WebSecurityCustomizer webSecurityCustomizer() {
+    	System.out.println("\tSecurityConfiguration::webSecurityCustomizer() ");
     	return (web)->web
               .ignoring()
-              .antMatchers( "/static/**", "/h2-console/**"); //antMatchers("/images/**", "/css/**")
+              .antMatchers( "/h2-console/**"); //Permitir acceso sin login a la consola H2
     }
 
 	//Creamos usuarios en memoria al arrancar la app-web y no necesitamos nada más
@@ -57,13 +54,13 @@ public class SecurityConfigurationNew {// extends WebSecurityConfigurerAdapter (
 	//El usuario admin, tiene ambos roles
 	//Encriptamos sus passwords llamando al @Bean del final
 	@Bean
-	public InMemoryUserDetailsManager userDetailsService() {
-    	System.out.println("\t SecurityConfigurationNew::userDetailsService() ");
+	InMemoryUserDetailsManager userDetailsService() {
+    	System.out.println("\t SecurityConfiguration::userDetailsService() ");
     	
 		UserDetails user = User.withUsername("user")
 				.passwordEncoder(passwordEncoder()::encode).password("password")
 				.roles("USER").build();
-
+	    		
 		UserDetails admin = User.withUsername("admin")
 				.passwordEncoder(passwordEncoder()::encode).password("password")
 				.roles("ADMIN","USER").build();
@@ -74,12 +71,11 @@ public class SecurityConfigurationNew {// extends WebSecurityConfigurerAdapter (
 		userDetailsManager.createUser(admin);
 		
 		return userDetailsManager;  			
-
     }
 
 	//Encriptamos sus passwords usando BCryptPasswordEncoder
     @Bean
-    public PasswordEncoder passwordEncoder() {
+    PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
     
