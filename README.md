@@ -1,4 +1,4 @@
-# 2022 spring-web-secure basic example MDAI
+# Spring-web-secure basic example MDAI
 Ejemplo básico para la configuracion de seguridad en el ejemplo usuarios y direcciones de MDAI
 ## Especificaciones
 

@@ -28,8 +28,8 @@ public class SecurityConfiguration {// extends WebSecurityConfigurerAdapter (cla
 	SecurityFilterChain filterChain (HttpSecurity http) throws Exception {
     	
     	System.out.println("\tSecurityConfiguration::filterChain(HttpSecurity http) ");
-    	//Las llamadas a métodos devuelven un objeto HttpSecurity. 
-    	//Se pueden encadenar metodos (and()) para configurar reglas de autorización de manera más concisa.
+    	//Las llamadas a metodos devuelven un objeto HttpSecurity. 
+    	//Se pueden encadenar metodos (and()) para configurar reglas de autorizacion de manera mas concisa.
     	http.authorizeHttpRequests()
                 .antMatchers("/admin/**").hasRole("ADMIN") //para definir patrones de URL especificos y aplicar reglas de autorizacion a esos patrones.
                 .antMatchers("/user/**").hasRole("USER")                                 
@@ -37,6 +37,7 @@ public class SecurityConfiguration {// extends WebSecurityConfigurerAdapter (cla
                 .formLogin()//loginPage por defecto proporcionada por Spring. Acceso mediante form: /login y /logout respectivamente. 
               	.and()
                 .exceptionHandling().accessDeniedHandler(customAccessDeniedHandler); //una vez logueado, si no es nuestro rol se lanzará la excepcion y mostraremos nuestra pag
+    	
         return http.build();
 				
     }
@@ -49,7 +50,7 @@ public class SecurityConfiguration {// extends WebSecurityConfigurerAdapter (cla
               .antMatchers( "/h2-console/**"); //Permitir acceso sin login a la consola H2
     }
 
-	//Creamos usuarios en memoria al arrancar la app-web y no necesitamos nada más
+	//Creamos usuarios en memoria al arrancar la app-web y no necesitamos nada mas
 	//Creamos dos usuarios user y admin, con los roles USER y ADMIN respectivamente
 	//El usuario admin, tiene ambos roles
 	//Encriptamos sus passwords llamando al @Bean del final

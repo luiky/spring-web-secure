@@ -57,20 +57,21 @@ public class UsuarioController {
      ADD USUARIO, solo ADMIN     
     */
     //Invocado desde el boton + de listarUsuarios.html 
-    //muestra el formulario para añadir un usuario
-    //el parametro usuario, es "añadido" al modelo automaticamente por Spring 
-    //Usa la clase del objeto (Usuario) y lo añadirá como el atributo usuario al Model
+    //muestra el formulario para aniadir un usuario
+    //el parametro usuario, es "aniadido" al modelo automaticamente por Spring 
+    //Usa la clase del objeto (Usuario) y lo aniadira como el atributo usuario al Model
     //Sigue la convencion de nombres. Mombre de variable: el de la clase con la primera con minuscula. 
     //Salvo que la clase tenga dos mayusculas seguidas al principio que la variable se llamara como la clase
     //
     //Otra opcion:
-    //Podemos pasar el Model como param de entrada, y añadir un atributo con el nombre que queramos:
+    //Podemos pasar el Model como param de entrada, y aniadir un atributo con el nombre que queramos:
     //model.addAttribute("usuarioAdd", new Usuario(null, null)); y usarlo en el th:object={usuarioAdd} del html
     //Comprobacion:
     //Podemos pasar el model como param de entrada y el usuario y comprobar que de verdad esta en el modelo...
     @GetMapping("/admin/addUsuario")
     public String showAddUsuarioForm(Usuario usuario) {    	
-    	System.out.println("\t UsuarioController::showAddUsuarioForm");    	
+    	System.out.println("\t UsuarioController::showAddUsuarioForm");
+    	
         return "addUsuario";
     }
 
@@ -108,8 +109,8 @@ public class UsuarioController {
     	//lo añadimos a model, su clave será "usuarioUpdate". Podremos acceder a él desde la vista actualizarUsuario
     	//el .get final es por el Optional devuelto.
         model.addAttribute("usuarioUpdate",usuarioService.findUsuarioById(usuarioId).get() );
-        //nombre de la vista html, diferente escrito en castellano a idea, para que veais que es posible.
-        //devolvera el nombre del .html (actualizarUsuario.html), lo mostrara, pero la url en la barra direcciones sera /user/updateUsuario/id
+        //nombre de la vista html, diferente y escrito en castellano a idea, para que veais que es posible.
+        //devolver el nombre del .html (actualizarUsuario.html), lo mostrara, pero la url en la barra direcciones sera /user/updateUsuario/id
         return "actualizarUsuario";
     }
 
@@ -121,7 +122,7 @@ public class UsuarioController {
     	//opcion 1 "logica" en controller y muestra de datos para entender la vinculacion con el formulario
 //    	    	
     	//OJO: nuestro usuario recibido desde el form y el modelo solo tiene dos campos correctos. Los que hemos actualizado. 
-//    	Si incluimos el input oculto para direcciones, tb las habrá copiado y estarán correctas
+//    	Si incluimos el input oculto para direcciones, tb las habra copiado y estaran correctas
 //    	Usuario u =  (Usuario) model.getAttribute("usuario");
 //    	System.out.println("Usuario en el modelo " + u.toString());
 //    	System.out.println("Parametro Usuario " +usuario.toString());  
@@ -132,24 +133,25 @@ public class UsuarioController {
 //    	u.setName(usuario.getName());    	
 //      model.addAttribute("usuarios", usuarioService.updateUsuario(u));
         
-        //opcion 2 "logica" en services. No es estrictamente necesario incluirlo en model.
+        //opcion 2 "logica" en services. 
     	//usuarioService.updateNameAndEmailUsuario(id, usuario.getName(), usuario.getEmail());
+    	
+    	//No es estrictamente necesario incluirlo en model.
     	model.addAttribute("usuarios", usuarioService.updateNameAndEmailUsuario(id, usuario.getName(), usuario.getEmail()) );
     	    	 
-    	//OJO: observar, aunque no necesaria aquí, la copia de direcciones sobre el usuario en el input oculto del html (actualizarUsuario.html)
-    	
+    	//OJO: observar, aunque no necesaria aqui, la copia de direcciones sobre el usuario en el input oculto del html (actualizarUsuario.html)    	
         return "redirect:/user/listarUsuarios";    	
     }
 	
     /**
      * DELETE USUARIO solo admin
      */
-    //Es invocado desde el boton típico de la papelera en listarUsuarios.html
-    //se le envía el id del usuario y este se añade url con @PathVariable, aunque no llega a mostrarse la URL por la redireccion
+    //Es invocado desde el boton tipico de la papelera en listarUsuarios.html
+    //se le envia el id del usuario y este se añade url con @PathVariable, aunque no llega a mostrarse la URL por la redireccion
     @DeleteMapping("/admin/deleteUsuario/{id}")
     public String deleteUsuario(@PathVariable("id") Long id, Model model) {
     	System.out.println("\t usuarioController::deleteUsuario");
-    	//no es estrictamente necesario añadir los usuarios al modelo en este caso
+    	//no es estrictamente necesario aniadir los usuarios al modelo en este caso
         model.addAttribute("usuarios", usuarioService.deleteUsuarioById(id));        
         return "redirect:/user/listarUsuarios";
     }

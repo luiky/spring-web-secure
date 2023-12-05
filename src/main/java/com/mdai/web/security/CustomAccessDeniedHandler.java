@@ -18,7 +18,7 @@ import org.springframework.stereotype.Component;
 public class CustomAccessDeniedHandler implements AccessDeniedHandler {
 	//ejemplo para usar el log (por si les mola)
 	private Log log = LogFactory.getLog(CustomAccessDeniedHandler.class);
-	
+
 	/*
 	 * Handles an access denied failure.
 	 * @param request that resulted in an <code>AccessDeniedException</code>
@@ -31,16 +31,18 @@ public class CustomAccessDeniedHandler implements AccessDeniedHandler {
 	public void handle(HttpServletRequest request, HttpServletResponse response,
 			AccessDeniedException accessDeniedException) throws IOException, ServletException {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-      
-		//uso de mensajes en propios en log
+
+		//uso de mensajes propios en el log
 		if (authentication != null) {
 			log.warn("User: " + authentication.getName() 
-            + " MI MENSAJE: attempted to access the protected URL: "
-            + request.getRequestURI());
-      }
-		System.out.println("\t handle request "+request.getContextPath());
-      response.sendRedirect(request.getContextPath() + "/accessDenied");
-		
+			+ " MI MENSAJE: attempted to access the protected URL: "
+			+ request.getRequestURI());
+		}
+
+		//mensajito para depuracion basica por consola  
+		System.out.println("\t CustomAccessDeniedHandler::handle request "+request.getContextPath());		
+		response.sendRedirect(request.getContextPath() + "/accessDenied");
+
 	}
 
 }
