@@ -2,9 +2,9 @@ package com.mdai.web.security;
 
 import java.io.IOException;
 
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -27,9 +27,12 @@ public class CustomAccessDeniedHandler implements AccessDeniedHandler {
 	 * @throws IOException in the event of an IOException
 	 * @throws ServletException in the event of a ServletException
 	 */
+
 	@Override
-	public void handle(HttpServletRequest request, HttpServletResponse response,
-			AccessDeniedException accessDeniedException) throws IOException, ServletException {
+	public void handle(HttpServletRequest request,
+			HttpServletResponse response, AccessDeniedException accessDeniedException)
+			throws IOException, jakarta.servlet.ServletException {
+		// TODO Auto-generated method stub
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
 		//uso de mensajes propios en el log
@@ -42,7 +45,6 @@ public class CustomAccessDeniedHandler implements AccessDeniedHandler {
 		//mensajito para depuracion basica por consola  
 		System.out.println("\t CustomAccessDeniedHandler::handle request "+request.getContextPath());		
 		response.sendRedirect(request.getContextPath() + "/accessDenied");
-
 	}
 
 }
