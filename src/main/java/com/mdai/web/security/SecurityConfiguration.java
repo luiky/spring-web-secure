@@ -21,9 +21,9 @@ import org.springframework.security.web.access.AccessDeniedHandler;
 //@Configuration Indicates that a class declares one or more @Bean methods and may be processed by the Spring container to generate bean definitions and service requests for those beans at runtime
 public class SecurityConfiguration {// extends WebSecurityConfigurerAdapter (clase deprecated) https://spring.io/blog/2022/02/21/spring-security-without-the-websecurityconfigureradapter{
 
-	//@Autowired
+	@Autowired
 	//TODO handler exceptions
-	//private AccessDeniedHandler customAccessDeniedHandler;	
+	private AccessDeniedHandler customAccessDeniedHandler;	
 	
 	//configuración de Spring Security. Para definir como deben manejarse la autenticación y la autorización en la app-web.
 	@Bean
@@ -40,10 +40,8 @@ public class SecurityConfiguration {// extends WebSecurityConfigurerAdapter (cla
                 .requestMatchers("/user/**").hasRole("USER")
                 .anyRequest().permitAll() //el resto de peticiones pueden ser realizadas sin login (index.html y hola)
                 )
-    			.formLogin(Customizer.withDefaults()); //loginPage por defecto proporcionada por Spring. Acceso mediante form: /login y /logout respectivamente. 
-    			//TODO manejar la exception para poner una pagina bonita de prohibido acceso.
-				// deprecated o remove: .exceptionHandling().accessDeniedHandler(customAccessDeniedHandler); //una vez logueado, si no es nuestro rol se lanzará la excepcion y mostraremos nuestra pag
-    	
+    	.exceptionHandling((exception) -> exception.accessDeniedHandler(customAccessDeniedHandler) ) // deprecated o remove: .exceptionHandling().accessDeniedHandler(customAccessDeniedHandler); //una vez logueado, si no es nuestro rol se lanzará la excepcion y mostraremos nuestra pag
+    			.formLogin(Customizer.withDefaults()); //loginPage por defecto proporcionada por Spring. Acceso mediante form: /login y /logout respectivamente.     	
     	return http.build();
     	
 				
